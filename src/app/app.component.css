@@ -1,0 +1,14 @@
+.center {
+  margin: auto;
+  width: 50%;
+  border: 5px solid #ffff00;
+  padding: 10px;
+}
+
+.actionButton {
+  float: right;
+  margin-top: -19px;
+}
+.time{
+    display: flex;
+}

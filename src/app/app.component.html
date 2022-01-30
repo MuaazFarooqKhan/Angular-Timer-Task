@@ -1,21 +1,120 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+<div class="center">
+  <form [formGroup]="addEmployee" (ngSubmit)="addEmployeeName(addEmployee)">
+    <input
+      type="text"
+      class="form-control"
+      formControlName="name"
+      placeholder="Name"
+      style="width: 50%"
+    />
+    <div
+      *ngIf="
+        addEmployee.controls['name'].touched && !addEmployee.controls['name'].valid
+      "
+      class="alert alert-danger"
+      style="width: 50%;"
+    >
+      <span *ngIf="addEmployee.controls['name'].hasError('required')">
+        Name is required
+      </span>
+      <span *ngIf="addEmployee.controls['name'].hasError('minlength')">
+        Min length is 3
+      </span>
+    </div>
+  </form>
+  <div
+    *ngIf="
+      this.calendarModel &&
+      this.calendarModel.name &&
+      this.calendarModel.name.length >= 3
+    "
+    class="actionButton"
+  >
+    <button
+      (click)="startTimer()"
+      class="btn btn-primary"
+      style="margin-right: 10px"
+    >
+      Sign In
+    </button>
+    <button
+      (click)="pauseTimer()"
+      *ngIf="
+        this.calendarModel &&
+        this.calendarModel.timeLeft &&
+        this.calendarModel.timeLeft.length !== 0
+      "
+      class="btn btn-danger"
+    >
+      Sign Out
+    </button>
+  </div>
+  <div class="time">
+    <p
+      *ngIf="
+        this.calendarModel &&
+        this.calendarModel.timeLeft &&
+        this.calendarModel.timeLeft.length !== 0 &&
+        this.calendarModel.timeLeft[0] !== 0
+      "
+    >
+      <em>{{ this.calendarModel.timeLeft[0] }}</em
+      ><b> Hours</b>
+    </p>
+    <p
+      *ngIf="
+        this.calendarModel &&
+        this.calendarModel.timeLeft &&
+        this.calendarModel.timeLeft.length !== 0 &&
+        this.calendarModel.timeLeft[1] !== 0
+      "
+      style="margin-left: 10px"
+    >
+      <em>{{ this.calendarModel.timeLeft[1] }}</em
+      ><b> Minutes</b>
+    </p>
+    <p
+      *ngIf="
+        this.calendarModel &&
+        this.calendarModel.timeLeft &&
+        this.calendarModel.timeLeft.length !== 0 &&
+        this.calendarModel.timeLeft[2] !== 0
+      "
+      style="margin-left: 10px"
+    >
+      <em>{{ this.calendarModel.timeLeft[2] }}</em
+      ><b> Seconds</b>
+    </p>
+  </div>
+  <button
+    (click)="addData(addEmployee)"
+    *ngIf="
+      this.calendarModel &&
+      this.calendarModel.showSendDataButton &&
+      this.calendarModel.showSendDataButton === true
+    "
+    class="btn btn-success"
+  >
+    Send data
+  </button>
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
 
-<router-outlet></router-outlet>
+<div class="container">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Actor Name</th>
+        <th>Character Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let character of this.calendarModel.showData">
+        <td>{{ character.name }}</td>
+        <td>
+          {{ character.time[0] }} Hours {{ character.time[1] }} Minutes
+          {{ character.time[2] }} Seconds
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
